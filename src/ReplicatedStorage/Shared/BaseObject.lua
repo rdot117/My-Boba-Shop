@@ -34,7 +34,7 @@ function BaseObject:GetOccupiedUnits()
         for y = self.Y, self.Y + if normal then self.Size.Y - 1 else self.Size.X - 1 do
             table.insert(occupiedSlots, {
                 X = x,
-                Y= y,
+                Y = y,
             })
         end
     end
