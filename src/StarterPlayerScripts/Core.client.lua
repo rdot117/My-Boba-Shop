@@ -11,5 +11,7 @@ local require = require(ReplicatedStorage.Log)
 require:AddDirectory(Handlers)
 
 -- Init
+require("DataHandler"):Init()
+require("BuildingHandler"):Init()
 require("RenderingHandler"):Init()
 require("StreamingHandler"):Init()
