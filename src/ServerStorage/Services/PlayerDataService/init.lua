@@ -13,7 +13,7 @@ local Base64 = require("Base64")
 
 -- objects
 local ProfileStore = ProfileService.GetProfileStore(
-    "D1",
+    "D6",
     ProfileTemplate
 )
 
@@ -52,16 +52,12 @@ function PlayerDataService:Replicate(player)
     profileBool.Value = true
     
     -- serialization configuration
-    local serialize = Base64.serialize
-    local membersToSerialize = {
-        "Money",
-        "Departments",
-    }
+    local membersToSerialize = {}
 
     -- serialize and replicate
     for _, memberName in membersToSerialize do
         local member = profile.Data[memberName]
-        local serializedMember = serialize(member)
+        local serializedMember = Base64.Serialize(member)
 
         profileBool:SetAttribute(memberName, serializedMember)
     end
@@ -97,6 +93,13 @@ end
 
 function PlayerDataService:_playerRemoving(player)
     if self.Profiles[player] ~= nil then
+
+        -- get plot save data
+        local PlotService = require("PlotService")
+        local serializedPlotData = PlotService:GetSerializedData(player)
+        self.Profiles[player].Data.Plot = serializedPlotData
+
+        -- release profile
         self.Profiles[player]:Release()
     end
 end

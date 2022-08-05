@@ -115,7 +115,7 @@ do
 	local tostring = tostring
 	local nan = tostring(0/0)
 
-	function serializer.serialize(data)
+	function serializer.Serialize(data)
 		local write, finalize = bit.newbitwriter()
 		local nrefs = 0
 		local refs = {}
@@ -232,7 +232,7 @@ do
 		return final
 	end
 
-	function serializer.deserialize(bin)
+	function serializer.Deserialize(bin)
 		local read = bit.newbitreader(bin)
 		local nrefs = 0
 		local refs = {}

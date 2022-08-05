@@ -7,12 +7,9 @@ local Data = ReplicatedStorage.Source.Data
 
 -- modules
 local require = require(ReplicatedStorage.Log)
-local Objects = require(ServerStorage.Source.Objects)
+local ServerObjects = require(ServerStorage.Source.ServerObjects)
 local PlotConstants = require(Data.PlotConstants)
 local Trove = require("Trove")
-
--- constants
-local GRID_STUD_SIZE = 4
 
 -- functions
 local function generateEmptyPlot()
@@ -21,7 +18,7 @@ local function generateEmptyPlot()
     for x = 1, 8 do
         plot[x] = {}
         for y = 1, 8 do
-            plot[x][y] = Data.UNIT_EMPTY
+            plot[x][y] = PlotConstants.UNIT_EMPTY
         end
     end
 
@@ -58,7 +55,7 @@ function Plot:Initialize()
             local serializedData = self._plotData[x][y]
 
             if serializedData ~= PlotConstants.UNIT_EMPTY then
-                self._objectPlotData[x][y] = Objects.constructFromData(self, serializedData)
+                self._objectPlotData[x][y] = ServerObjects.constructFromData(self, serializedData)
             else
                 self._objectPlotData[x][y] = PlotConstants.UNIT_EMPTY
             end
@@ -73,10 +70,10 @@ function Plot:Serialize()
         for y = 1, self.Y do
             local unit = self._objectPlotData[x][y]
 
-            if unit ~= Data.UNIT_EMPTY then
+            if unit ~= PlotConstants.UNIT_EMPTY then
                 serializedPlotData[x][y] = unit:Serialize()
             else
-                serializedPlotData[x][y] = Data.UNIT_EMPTY
+                serializedPlotData[x][y] = PlotConstants.UNIT_EMPTY
             end
         end
     end
@@ -84,7 +81,7 @@ function Plot:Serialize()
 end
 
 function Plot:Destroy()
-    self._trove:Cleanup()
+    self._trove:Destroy()
     setmetatable(self, nil)
     table.clear(self)
 end
