@@ -1,0 +1,47 @@
+{
+  "name": "Boba",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+
+      "Log": {
+        "$path": "src/Log"
+      },
+
+      "Source": {
+        "$path": "src/ReplicatedStorage"
+      }
+
+    },
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+
+      "Source": {
+        "$path": "src/ServerScriptService"
+      }
+    },
+
+    "ServerStorage": {
+      "$className": "ServerStorage",
+
+      "Source": {
+        "$path": "src/ServerStorage"
+      }
+    },
+
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+
+        "Source": {
+          "$path": "src/StarterPlayerScripts"
+        }
+      }
+    }
+  }
+}
