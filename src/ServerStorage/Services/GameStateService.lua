@@ -1,6 +1,10 @@
 -- services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+-- modules
+local require = require(ReplicatedStorage.Log)
+local Network = require("Network")
+
 -- service
 local GameStateService = {}
 

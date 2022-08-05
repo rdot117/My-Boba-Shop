@@ -12,5 +12,6 @@ local require = require(ReplicatedStorage.Log)
 require:AddDirectory(Services)
 
 -- Init
+require("PlotService"):Init()
 require("PlayerDataService"):Init()
 require("GameStateService"):Init()
