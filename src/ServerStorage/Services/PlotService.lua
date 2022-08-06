@@ -28,7 +28,7 @@ function PlotService:Init()
             Id = "Test_Counter",
             X = 4,
             Y = 2,
-            R = 1,
+            R = 2,
         }
 
         playerPlot:Initialize()

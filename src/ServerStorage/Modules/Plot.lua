@@ -37,6 +37,7 @@ function Plot.new(model, plotData)
 
     -- configure plot
     self.Model = model
+    self.Replicators = self.Model.Replicators
     self.X = 8
     self.Y = 8
 
