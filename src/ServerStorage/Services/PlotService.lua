@@ -42,6 +42,13 @@ function PlotService:Init()
             R = 1,
         }
 
+        playerPlot._plotData[6][2] = {
+            Id = "Test_Blender",
+            X = 6,
+            Y = 2,
+            R = 1,
+        }
+
         playerPlot:Initialize()
         PlotCreated:FireClient(player, playerPlot.Model)
     end)

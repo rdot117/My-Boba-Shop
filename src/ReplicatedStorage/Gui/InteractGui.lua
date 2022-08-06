@@ -75,10 +75,15 @@ function InteractGui.new()
                 releaseConnection = nil
 
                 self._activeInput = false
-                local callback = InteractHandler:GetInteractableCallback(self.Interactable)
 
-                if typeof(callback) == "function" then
-                    callback()
+                if self.Interactable ~= nil then
+                    local enabled = self.Interactable:GetAttribute("Enabled")
+                    if enabled == false then return end
+
+                    local callback = InteractHandler:GetInteractableCallback(self.Interactable)
+                    if typeof(callback) == "function" then
+                        callback()
+                    end
                 end
             end
         end)
@@ -124,10 +129,15 @@ function InteractGui.new()
                     releaseConnection = nil
     
                     self._activeInput = false
-                    local callback = InteractHandler:GetInteractableCallback(self.Interactable)
-    
-                    if typeof(callback) == "function" then
-                        callback()
+
+                    if self.Interactable ~= nil then
+                        local enabled = self.Interactable:GetAttribute("Enabled")
+                        if enabled == false then return end
+                        
+                        local callback = InteractHandler:GetInteractableCallback(self.Interactable)
+                        if typeof(callback) == "function" then
+                            callback()
+                        end
                     end
                 end
             end)

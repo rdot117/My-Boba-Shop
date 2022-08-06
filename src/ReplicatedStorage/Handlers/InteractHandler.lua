@@ -57,7 +57,9 @@ function InteractHandler:Init()
 
             for interactable, _ in interactables do
                 local distance = (interactable.WorldPosition - humanoidRootPart.Position).Magnitude
-
+                local enabled = interactable:GetAttribute("Enabled")
+                
+                if enabled == false then continue end
                 if distance <= interactDistance and distance <= closestInteractableDistance then
                     closestInteractable = interactable
                     closestInteractableDistance = distance
