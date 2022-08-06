@@ -26,13 +26,13 @@ local function generateEmptyPlot()
 end
 
 -- class
-local Plot = {}
+local ServerPlot = {}
 
-function Plot.new(model, plotData)
+function ServerPlot.new(model, plotData)
     local self = setmetatable({
         _trove = Trove.new(),
     }, {
-        __index = Plot,
+        __index = ServerPlot,
     })
 
     -- configure plot
@@ -48,7 +48,7 @@ function Plot.new(model, plotData)
     return self
 end
 
-function Plot:Initialize()
+function ServerPlot:Initialize()
 
     -- create plot objects
     for x = 1, self.X do
@@ -64,7 +64,7 @@ function Plot:Initialize()
     end
 end
 
-function Plot:Serialize()
+function ServerPlot:Serialize()
     local serializedPlotData = {}
     for x = 1, self.X do
         serializedPlotData[x] = {}
@@ -81,10 +81,10 @@ function Plot:Serialize()
     return serializedPlotData
 end
 
-function Plot:Destroy()
+function ServerPlot:Destroy()
     self._trove:Destroy()
     setmetatable(self, nil)
     table.clear(self)
 end
 
-return Plot
+return ServerPlot

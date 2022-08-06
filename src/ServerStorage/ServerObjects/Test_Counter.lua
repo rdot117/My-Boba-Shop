@@ -40,20 +40,22 @@ function Test_Counter.new(plot, x, y, r)
     self.X = x
     self.Y = y
 
-    -- create object
-    self.Model = Instance.new("Part")
-    self.Model.Name = "Test_Counter"
-    self.Model.Anchored = true
-    self.Model.CanCollide = true
-    self.Model.FrontSurface = "Hinge"
-    self.Model.CFrame = self:GetReferenceCFrame() * self:GetMiddleOffsetCFrame() * CFrame.new(0, PlotConstants.UNIT_STUD_SIZE/2, 0)
-    self.Model.Size = Vector3.new(
-        PlotConstants.UNIT_STUD_SIZE * self.Size.X,
-        PlotConstants.UNIT_STUD_SIZE,
-        PlotConstants.UNIT_STUD_SIZE * self.Size.Y
-    )
+    -- replicate to client
+    self:Replicate()
+    
+    -- self.Model = Instance.new("Part")
+    -- self.Model.Name = "Test_Counter"
+    -- self.Model.Anchored = true
+    -- self.Model.CanCollide = true
+    -- self.Model.FrontSurface = "Hinge"
+    -- self.Model.CFrame = self:GetReferenceCFrame() * self:GetMiddleOffsetCFrame() * CFrame.new(0, PlotConstants.UNIT_STUD_SIZE/2, 0)
+    -- self.Model.Size = Vector3.new(
+    --     PlotConstants.UNIT_STUD_SIZE * self.Size.X,
+    --     PlotConstants.UNIT_STUD_SIZE,
+    --     PlotConstants.UNIT_STUD_SIZE * self.Size.Y
+    -- )
 
-    self.Model.Parent = workspace
+    -- self.Model.Parent = workspace
     return self
 end
 

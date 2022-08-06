@@ -7,18 +7,12 @@ local require = require(ReplicatedStorage.Log)
 -- class
 local Objects = {}
 
-function Objects.new(objectId, ...)
-    local objectModule = script:FindFirstChild(objectId)
-    if objectModule == nil then return end
-    return require(objectModule).new(...)
-end
-
-function Objects.constructFromData(plot, serializedData)
+function Objects.new(plot, replicator)
+    local serializedData = replicator:GetAttributes()
     if serializedData.Id == nil then return end
-    
     local objectModule = script:FindFirstChild(serializedData.Id)
     if objectModule == nil then return end
-    return require(objectModule).constructFromData(plot, serializedData)
+    return require(objectModule).new(plot, replicator)
 end
 
 return Objects

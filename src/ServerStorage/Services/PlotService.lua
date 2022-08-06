@@ -8,7 +8,11 @@ local Modules = ServerStorage.Source.Modules
 
 -- modules
 local require = require(ReplicatedStorage.Log)
-local Plot = require(Modules.Plot)
+local ServerPlot = require(Modules.ServerPlot)
+local Network = require("Network")
+
+-- variables
+local PlotCreated = Network.RegisterEvent("PlotCreated")
 
 -- service
 local PlotService = {}
@@ -20,7 +24,7 @@ function PlotService:Init()
     local PlayerDataService = require("PlayerDataService")
     PlayerDataService.OnProfileLoaded:Connect(function(player)
         local playerProfile = PlayerDataService.Profiles[player]
-        local playerPlot = Plot.new(workspace.Plot, playerProfile.Data.Plot)
+        local playerPlot = ServerPlot.new(workspace.Plot, playerProfile.Data.Plot)
         self.PlayerPlots[player] = playerPlot
 
         --playerPlot._plotData[1][1] = {Id = "Test_Counter", X = 1, Y = 1}
@@ -32,6 +36,7 @@ function PlotService:Init()
         }
 
         playerPlot:Initialize()
+        PlotCreated:FireClient(player, playerPlot.Model)
     end)
 
     -- cleanup plots

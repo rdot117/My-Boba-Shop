@@ -1,10 +1,8 @@
 -- services
-local ServerStorage = game:GetService("ServerStorage")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- folders
 local Shared = ReplicatedStorage.Source.Shared
-local Modules = ServerStorage.Source.Modules
 local Data = ReplicatedStorage.Source.Data
 
 -- modules
@@ -23,7 +21,7 @@ local Test_Counter = setmetatable({}, {
     __index = BaseObject,
 })
 
-function Test_Counter.new(plot, x, y, r)
+function Test_Counter.new(plot, replicator)
     local self = setmetatable({
         _trove = Trove.new(),
     }, {
@@ -32,16 +30,17 @@ function Test_Counter.new(plot, x, y, r)
 
     -- configure object
     self.Plot = plot
+    self.Replicator = replicator
     self.Id = OBJECT_ID
     self.Size = OBJECT_DATA.Size
 
     -- positional + rotational data
-    self.R = r
-    self.X = x
-    self.Y = y
+    self.R = replicator:GetAttribute("R")
+    self.X = replicator:GetAttribute("X")
+    self.Y = replicator:GetAttribute("Y")
 
-    -- create object
-    self.Model = Instance.new("Part")
+    -- visualize
+    self.Model = self._trove:Construct(Instance, "Part")
     self.Model.Name = "Test_Counter"
     self.Model.Anchored = true
     self.Model.CanCollide = true
@@ -55,10 +54,6 @@ function Test_Counter.new(plot, x, y, r)
 
     self.Model.Parent = workspace
     return self
-end
-
-function Test_Counter.constructFromData(plot, serializedData)
-    return Test_Counter.new(plot, serializedData.X, serializedData.Y, serializedData.R)
 end
 
 return Test_Counter

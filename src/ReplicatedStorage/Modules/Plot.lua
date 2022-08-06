@@ -6,6 +6,7 @@ local Data = ReplicatedStorage.Source.Data
 
 -- modules
 local require = require(ReplicatedStorage.Log)
+local Objects = require(ReplicatedStorage.Source.Objects)
 local Trove = require("Trove")
 
 -- class
@@ -23,13 +24,12 @@ function Plot.new(model)
     self._objects = {}
     
     -- create client objects
+    for _, replicator in self.Model.Replicators:GetChildren() do
+        self:RegisterObject(replicator)
+    end
+
     self._trove:Connect(self.Model.Replicators.ChildAdded, function(replicator)
-
-        -- destroy object if there is an existing one
-        self:DestroyObject(replicator)
-
-        -- register object
-        
+        self:RegisterObject(replicator)
     end)
 
     self._trove:Connect(self.Model.Replicators.ChildRemoved, function(replicator)
@@ -43,8 +43,13 @@ function Plot:GetObjectFromReplicator(replicator)
     return self._objects[replicator]
 end
 
+function Plot:RegisterObject(replicator)
+    self:DestroyObject(replicator)
+    self._objects[replicator] = self._trove:Construct(Objects, self, replicator)
+end
+
 function Plot:DestroyObject(replicator)
-    local object = self:GetObjectFroimReplicator(replicator)
+    local object = self:GetObjectFromReplicator(replicator)
     self._objects[replicator] = nil
 
     if object then

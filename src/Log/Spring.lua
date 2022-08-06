@@ -14,6 +14,11 @@ function Spring.new(initial)
 	}, Spring)
 end
 
+function Spring:Destroy()
+	setmetatable(self, nil)
+	table.clear(self)
+end
+
 --- Impulse the spring with a change in velocity
 function Spring:Impulse(velocity)
 	self.Velocity = self.Velocity + velocity

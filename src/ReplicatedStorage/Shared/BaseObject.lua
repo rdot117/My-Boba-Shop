@@ -1,4 +1,5 @@
 -- services
+local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- folders
@@ -11,6 +12,19 @@ local Trove = require("Trove")
 
 -- class
 local BaseObject = {}
+
+if RunService:IsServer() then
+    function BaseObject:Replicate()
+        self.Replicator = self.Replicator or Instance.new("Folder")
+        self.Replicator.Name = self.Id
+        self.Replicator.Parent = self.Plot.Model.Replicators
+
+        local serializedObject = self:Serialize()
+        for member, memberValue in serializedObject do
+            self.Replicator:SetAttribute(member, memberValue)
+        end
+    end
+end
 
 function BaseObject:Serialize()
     return {

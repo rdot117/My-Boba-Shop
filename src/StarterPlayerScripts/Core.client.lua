@@ -13,5 +13,5 @@ require:AddDirectory(Handlers)
 -- Init
 require("DataHandler"):Init()
 require("BuildingHandler"):Init()
-require("RenderingHandler"):Init()
+require("InteractHandler"):Init()
 require("StreamingHandler"):Init()
