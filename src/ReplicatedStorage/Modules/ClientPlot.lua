@@ -6,17 +6,17 @@ local Data = ReplicatedStorage.Source.Data
 
 -- modules
 local require = require(ReplicatedStorage.Log)
-local Objects = require(ReplicatedStorage.Source.Objects)
+local ClientObjects = require(ReplicatedStorage.Source.ClientObjects)
 local Trove = require("Trove")
 
 -- class
-local Plot = {}
+local ClientPlot = {}
 
-function Plot.new(model)
+function ClientPlot.new(model)
     local self = setmetatable({
         _trove = Trove.new(),
     }, {
-        __index = Plot,
+        __index = ClientPlot,
     })
 
     -- configure plot
@@ -39,16 +39,16 @@ function Plot.new(model)
     return self
 end
 
-function Plot:GetObjectFromReplicator(replicator)
+function ClientPlot:GetObjectFromReplicator(replicator)
     return self._objects[replicator]
 end
 
-function Plot:RegisterObject(replicator)
+function ClientPlot:RegisterObject(replicator)
     self:DestroyObject(replicator)
-    self._objects[replicator] = self._trove:Construct(Objects, self, replicator)
+    self._objects[replicator] = self._trove:Construct(ClientObjects, self, replicator)
 end
 
-function Plot:DestroyObject(replicator)
+function ClientPlot:DestroyObject(replicator)
     local object = self:GetObjectFromReplicator(replicator)
     self._objects[replicator] = nil
 
@@ -57,10 +57,10 @@ function Plot:DestroyObject(replicator)
     end
 end
 
-function Plot:Destroy()
+function ClientPlot:Destroy()
     self._trove:Destroy()
     setmetatable(self, nil)
     table.clear(self)
 end
 
-return Plot
+return ClientPlot

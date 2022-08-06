@@ -1,5 +1,6 @@
 -- services
 local RunService = game:GetService("RunService")
+local ServerStorage = game:GetService("ServerStorage")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- folders
@@ -7,23 +8,29 @@ local Data = ReplicatedStorage.Source.Data
 
 -- modules
 local require = require(ReplicatedStorage.Log)
+local ObjectsData = require(Data.Objects)
 local PlotConstants = require(Data.PlotConstants)
 local Trove = require("Trove")
 
 -- class
 local BaseObject = {}
 
-if RunService:IsServer() then
-    function BaseObject:Replicate()
-        self.Replicator = self.Replicator or Instance.new("Folder")
-        self.Replicator.Name = self.Id
-        self.Replicator.Parent = self.Plot.Model.Replicators
+function BaseObject.new(plot, id, x, y, r)
+    local self = setmetatable({
+        _trove = Trove.new(),
+    }, {
+        __index = BaseObject,
+    })
 
-        local serializedObject = self:Serialize()
-        for member, memberValue in serializedObject do
-            self.Replicator:SetAttribute(member, memberValue)
-        end
-    end
+    -- configure base object
+    self.Plot = plot
+    self.Id = id
+    self.Size = ObjectsData[id].Size
+    self.X = x
+    self.Y = y
+    self.R = r
+
+    return self
 end
 
 function BaseObject:Serialize()

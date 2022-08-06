@@ -2,31 +2,24 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- folders
-local Shared = ReplicatedStorage.Source.Shared
+local Modules = ReplicatedStorage.Source.Modules
 local Data = ReplicatedStorage.Source.Data
 
 -- modules
 local require = require(ReplicatedStorage.Log)
 local PlotConstants = require(Data.PlotConstants)
 local ObjectsData = require(Data.Objects)
-local BaseObject = require(Shared.BaseObject)
-local Trove = require("Trove")
+local ClientBaseObject = require(Modules.BaseObject)
 
 -- constants
 local OBJECT_ID = "Test_Counter"
 local OBJECT_DATA = ObjectsData[OBJECT_ID]
 
 -- class
-local Test_Counter = setmetatable({}, {
-    __index = BaseObject,
-})
+local Test_Counter = {}
 
 function Test_Counter.new(plot, replicator)
-    local self = setmetatable({
-        _trove = Trove.new(),
-    }, {
-        __index = Test_Counter
-    })
+    local self = ClientBaseObject.new(plot, replicator)
 
     -- configure object
     self.Plot = plot
