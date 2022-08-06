@@ -7,7 +7,7 @@ local Modules = ReplicatedStorage.Source.Modules
 
 -- modules
 local require = require(ReplicatedStorage.Log)
-local Plot = require(Modules.Plot)
+local ClientPlot = require(Modules.ClientPlot)
 local Network = require("Network")
 
 -- variables
@@ -24,7 +24,7 @@ function StreamingHandler:Init()
             self.PlayerPlot = nil
         end
 
-        self.PlayerPlot = Plot.new(model)
+        self.PlayerPlot = ClientPlot.new(model)
     end)
 
     print("StreamingHandler Initialized!")

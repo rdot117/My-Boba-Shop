@@ -11,7 +11,7 @@ GridObjects["Test_Counter"] = {
 GridObjects["Test_Cashier"] = {
     Name = "Test Cashier",
     Id = "Test_Cashier",
-    Size = Vector2.new(1, 3),
+    Size = Vector2.new(1, 1),
 }
 
 return GridObjects

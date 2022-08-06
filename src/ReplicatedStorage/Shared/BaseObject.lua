@@ -15,24 +15,6 @@ local Trove = require("Trove")
 -- class
 local BaseObject = {}
 
-function BaseObject.new(plot, id, x, y, r)
-    local self = setmetatable({
-        _trove = Trove.new(),
-    }, {
-        __index = BaseObject,
-    })
-
-    -- configure base object
-    self.Plot = plot
-    self.Id = id
-    self.Size = ObjectsData[id].Size
-    self.X = x
-    self.Y = y
-    self.R = r
-
-    return self
-end
-
 function BaseObject:Serialize()
     return {
         Id = self.Id,
@@ -70,12 +52,6 @@ function BaseObject:GetMiddleOffsetCFrame()
         0,
         -(if normal then self.Size.Y/2 else self.Size.X/2) * PlotConstants.UNIT_STUD_SIZE
     ) * CFrame.Angles(0, math.rad(90 * (self.R - 1)), 0)
-end
-
-function BaseObject:Destroy()
-    self._trove:Destroy()
-    setmetatable(self, nil)
-    table.clear(self)
 end
 
 return BaseObject

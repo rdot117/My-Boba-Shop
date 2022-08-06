@@ -9,7 +9,7 @@ local Data = ReplicatedStorage.Source.Data
 local require = require(ReplicatedStorage.Log)
 local PlotConstants = require(Data.PlotConstants)
 local ObjectsData = require(Data.Objects)
-local ClientBaseObject = require(Modules.BaseObject)
+local ClientBaseObject = require(Modules.ClientBaseObject)
 
 -- constants
 local OBJECT_ID = "Test_Counter"
@@ -21,20 +21,9 @@ local Test_Counter = {}
 function Test_Counter.new(plot, replicator)
     local self = ClientBaseObject.new(plot, replicator)
 
-    -- configure object
-    self.Plot = plot
-    self.Replicator = replicator
-    self.Id = OBJECT_ID
-    self.Size = OBJECT_DATA.Size
-
-    -- positional + rotational data
-    self.R = replicator:GetAttribute("R")
-    self.X = replicator:GetAttribute("X")
-    self.Y = replicator:GetAttribute("Y")
-
     -- visualize
     self.Model = self._trove:Construct(Instance, "Part")
-    self.Model.Name = "Test_Counter"
+    self.Model.Name = OBJECT_ID
     self.Model.Anchored = true
     self.Model.CanCollide = true
     self.Model.FrontSurface = "Hinge"

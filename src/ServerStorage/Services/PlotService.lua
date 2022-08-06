@@ -32,7 +32,14 @@ function PlotService:Init()
             Id = "Test_Counter",
             X = 4,
             Y = 2,
-            R = 2,
+            R = 1,
+        }
+
+        playerPlot._plotData[5][2] = {
+            Id = "Test_Cashier",
+            X = 5,
+            Y = 2,
+            R = 1,
         }
 
         playerPlot:Initialize()

@@ -8,7 +8,7 @@ local Data = ReplicatedStorage.Source.Data
 
 -- modules
 local require = require(ReplicatedStorage.Log)
-local BaseObject = require(Modules.BaseObject)
+local ServerBaseObject = require(Modules.ServerBaseObject)
 
 -- constants
 local OBJECT_ID = "Test_Counter"
@@ -17,7 +17,7 @@ local OBJECT_ID = "Test_Counter"
 local Test_Counter = {}
 
 function Test_Counter.new(plot, x, y, r)
-    local self = BaseObject.new(plot, OBJECT_ID, x, y, r)
+    local self = ServerBaseObject.new(plot, OBJECT_ID, x, y, r)
 
     -- replicate to client
     self:Replicate()
