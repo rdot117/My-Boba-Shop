@@ -15,6 +15,16 @@ local SpringUtil = require("SpringUtil")
 local TaskScheduler = require("TaskScheduler")
 
 -- constants
+local normalColorSequence = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(206, 206, 206)),
+})
+
+local lockedColorSequence = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 169, 171)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 61, 61)),
+})
+
 local closeSize = UDim2.fromScale(0, 0)
 local openSize = UDim2.fromScale(1, 1)
 local clickSize = UDim2.fromScale(0.8, 0.8)
@@ -27,6 +37,23 @@ local openGoal = {
 local closeGoal = {
     Value = 0,
 }
+
+-- functions
+local function lerpColorSequence(c1, c2, t)
+    local c1_start = c1.Keypoints[1].Value
+    local c1_end = c1.Keypoints[2].Value
+
+    local c2_start = c2.Keypoints[1].Value
+    local c2_end = c2.Keypoints[2].Value
+
+    local l_start = c1_start:Lerp(c2_start, t)
+    local l_end = c1_end:Lerp(c2_end, t)
+
+    return ColorSequence.new({
+        ColorSequenceKeypoint.new(0, l_start),
+        ColorSequenceKeypoint.new(1, l_end),
+    })
+end
 
 -- ui
 local InteractGui = {}
@@ -42,6 +69,7 @@ function InteractGui.new()
     self.Gui = self._trove:Clone(GuiStorage.InteractGui)
     self._canvasGroup = self.Gui.CanvasGroup
     self._frame = self._canvasGroup.Frame
+    self._gradient = self._frame.UIGradient
 
     -- gui state
     self.Interactable = nil
@@ -92,6 +120,9 @@ function InteractGui.new()
                 if self.Interactable ~= nil then
                     enabled = self.Interactable:GetAttribute("Enabled")
                     if enabled == false then return end
+
+                    local locked = self.Interactable:GetAttribute("Locked")
+                    if locked == true then return end
                     
                     local callback = InteractHandler:GetInteractableCallback(self.Interactable)
                     if typeof(callback) == "function" then
@@ -121,6 +152,19 @@ function InteractGui.new()
             self._clickSpring.t = 1
         else
             self._clickSpring.t = 0
+        end
+
+        -- color
+        if self.Interactable ~= nil then
+            if clickSpringValue > 0 then
+                local locked = self.Interactable:GetAttribute("Locked")
+
+                if locked == true then
+                    self._gradient.Color = lerpColorSequence(normalColorSequence, lockedColorSequence, clickSpringValue)
+                else
+                    self._gradient.Color = normalColorSequence
+                end
+            end
         end
 
         -- size

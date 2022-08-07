@@ -56,7 +56,6 @@ function ClientBaseBlender:ConnectCallback(interactable)
             progressBar:Mount(self.BarAttachment or interactable)
             progressBar:Init(blenderData.BlendTime or 1)
         else
-            interactable:SetAttribute("Enabled", true)
             canUse = true
         end
     end)
