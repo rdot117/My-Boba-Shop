@@ -61,25 +61,38 @@ function InteractGui.new()
 
     -- click connection
     local InteractHandler = require("InteractHandler")
-    self._frame.InputBegan:Connect(function(input)
-        if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
-            return
-        end
-
+    local function activateInputStarted(input)
+        local enabled = self.Interactable:GetAttribute("Enabled")
+        if enabled == false then return end
         if self._activeInput == true then return end
 
         self._activeInput = true
+
+        local setInteractableFired = false
+        local signalConnection; signalConnection = self.InteractableSet:Connect(function()
+            setInteractableFired = true
+            signalConnection:Disconnect()
+            signalConnection = nil
+        end)
+
         local releaseConnection; releaseConnection = input:GetPropertyChangedSignal("UserInputState"):Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
+                
+                if signalConnection ~= nil then
+                    signalConnection:Disconnect()
+                    signalConnection = nil
+                end
+
                 releaseConnection:Disconnect()
                 releaseConnection = nil
-
+                
+                if setInteractableFired == true then return end
                 self._activeInput = false
 
                 if self.Interactable ~= nil then
-                    local enabled = self.Interactable:GetAttribute("Enabled")
+                    enabled = self.Interactable:GetAttribute("Enabled")
                     if enabled == false then return end
-
+                    
                     local callback = InteractHandler:GetInteractableCallback(self.Interactable)
                     if typeof(callback) == "function" then
                         callback()
@@ -87,6 +100,15 @@ function InteractGui.new()
                 end
             end
         end)
+    end
+
+    
+    self._frame.InputBegan:Connect(function(input)
+        if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
+            return
+        end
+
+        activateInputStarted(input)
     end)
 
 
@@ -120,27 +142,7 @@ function InteractGui.new()
         end
 
         if input.KeyCode == Enum.KeyCode.E then
-            if self._activeInput == true then return end
-            self._activeInput = true
-
-            local releaseConnection; releaseConnection = input:GetPropertyChangedSignal("UserInputState"):Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    releaseConnection:Disconnect()
-                    releaseConnection = nil
-    
-                    self._activeInput = false
-
-                    if self.Interactable ~= nil then
-                        local enabled = self.Interactable:GetAttribute("Enabled")
-                        if enabled == false then return end
-                        
-                        local callback = InteractHandler:GetInteractableCallback(self.Interactable)
-                        if typeof(callback) == "function" then
-                            callback()
-                        end
-                    end
-                end
-            end)
+            activateInputStarted(input)
         end
     end)
 
@@ -153,7 +155,10 @@ end
 
 function InteractGui:SetInteractable(interactable)
 
-    -- fire to cancel any previous :SetInteractable methods
+    -- reset inputs
+    self._activeInput = false
+
+    -- fire to cancel anything that needs to be cleaned up when interactable set is fired
     self.InteractableSet:Fire()
 
     -- setup method to cancel

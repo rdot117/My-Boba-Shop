@@ -37,23 +37,6 @@ function Test_Cashier.new(plot, replicator)
         PlotConstants.UNIT_STUD_SIZE * self.Size.Y
     )
 
-    -- interact
-    local interactAttachment = self._trove:Construct(Instance, "Attachment")
-    interactAttachment.Parent = model
-    CollectionService:AddTag(interactAttachment, INTERACT_TAG)
-
-    -- connect interactable
-    local InteractHandler = require("InteractHandler")
-
-    InteractHandler:ConnectCallback(interactAttachment, function()
-        print("Cashier interacted with!")
-    end)
-
-    -- cleanup interactable
-    self._trove:Add(function()
-        InteractHandler:DisconnectCallback(interactAttachment)
-    end)
-
     -- parent
     self.Model = model
     self.Model.Parent = workspace

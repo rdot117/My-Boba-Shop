@@ -29,6 +29,9 @@ function Test_Blender.new(plot, replicator)
     model.PrimaryPart.FrontSurface = "Hinge"
     model:SetPrimaryPartCFrame(self:GetReferenceCFrame() * self:GetMiddleOffsetCFrame() * CFrame.new(0, PlotConstants.UNIT_STUD_SIZE/2, 0))
 
+    -- bar attachment
+    self.BarAttachment = model.PrimaryPart.BarAttachment
+
     -- interact
     local interactAttachment = model.PrimaryPart.Attachment
     CollectionService:AddTag(interactAttachment, INTERACT_TAG)
