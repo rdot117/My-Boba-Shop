@@ -1,3 +1,15 @@
+local _requiredModules = {}
+
+local function lazyRequire(module)
+    if _requiredModules[module] ~= nil then
+        return _requiredModules[module]
+    else
+        local requiredModule = require(module)
+        _requiredModules[module] = requiredModule
+        return requiredModule
+    end
+end
+
 local Log = setmetatable({
     _directories = {
         --[[
@@ -30,7 +42,7 @@ local Log = setmetatable({
                     local module = directory:FindFirstChild(id)
 
                     if module:IsA("ModuleScript") then
-                        return require(module)
+                        return lazyRequire(module)
                     end
                 end
             end
@@ -41,7 +53,7 @@ local Log = setmetatable({
                 local module = script:FindFirstChild(id)
 
                 -- get module from instance
-                return self(module)
+                return lazyRequire(module)
             end
 
             error("Couldn't find module of name: " .. id)
@@ -50,7 +62,7 @@ local Log = setmetatable({
 
             -- make sure module is a module script
             if id:IsA("ModuleScript") then
-                return require(id)
+                return lazyRequire(id)
             end
         end
     end,
